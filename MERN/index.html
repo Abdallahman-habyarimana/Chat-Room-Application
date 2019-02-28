@@ -139,6 +139,11 @@
             event.preventDefault()
         })
 
+        username.addEventListener('keydown', function(event) {
+            if(event.which === 13 || event.which === 9 ){
+                username.append(username.value)
+            }
+        })
         // when user left the group
 
         exitBtn.addEventListener('click', function(){

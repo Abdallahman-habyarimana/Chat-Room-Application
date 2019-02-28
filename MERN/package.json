@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "open": "opener ./index.html",
+    "server": "nodemon server.js && npm start",
+    "start": "concurrently -kill-others \" npm run server \" \" npm run open \""
   },
   "author": "Abdallahman Habyarimana & Renata Moura",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^4.1.0",
     "mongodb": "^3.1.13",
+    "opener": "^1.5.1",
     "socket.io": "^2.2.0"
   }
 }
