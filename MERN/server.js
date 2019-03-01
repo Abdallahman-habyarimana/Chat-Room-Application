@@ -1,6 +1,5 @@
 const mongo = require('mongodb').MongoClient;
 const client = require('socket.io').listen(4000).sockets;
-
 // connect using m.lab
 const url = "mongodb://101087205:Chat123456@ds351455.mlab.com:51455/chat-application"
 

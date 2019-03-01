@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "open": "opener ./index.html",
+    "open": "opener ./public/src/index.html",
     "server": "nodemon server.js && npm start",
     "start": "concurrently -kill-others \" npm run server \" \" npm run open \""
   },
