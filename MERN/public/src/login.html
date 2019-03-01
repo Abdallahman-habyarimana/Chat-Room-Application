@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" 
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          crossorigin="anonymous">
+    <link href="../style/style.css" rel="stylesheet" type="text/css"></style>
+
+    <title>Login Form</title>
+</head>
+<body>
+        <div class="container login-container">
+                <div class="row">
+                    <div class="col-md-6 login-form-1">
+                        <h3>Login to Chat in Your Room</h3>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Name" id="username" />
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Your Email *"  id="email"/>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <input type="password" class="form-control" placeholder="Your Password *" id="password"/>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                    <select id="roomname" class="form-control" required>
+                                            <option> Please Select Room </option>
+                                            <option value="node">Node</option>
+                                            <option value="React">React</option>
+                                            <option value="Angular">Angular</option>
+                                            <option value="Java">Java group Chat</option>
+                                            <option value="typescript">TypeScript</option>    
+                                        </select>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <button id="submit" class="btn btn-danger">Login</button>
+                            </div>
+                        
+                    </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+<script>
+    (function() {
+        var element = function(id) {
+            return document.getElementById(id)
+        }
+                
+    //Get elements
+
+    var username = element('username');
+    var email = element('email');
+    var password = element('password');
+    var room = element('romm');
+    var btnsubmit= element('submit')
+
+    btnsubmit.addEventListener('click', function(){
+     
+      /*  console.log(username.value)
+        console.log(email.value)
+        console.log(password.value)
+        console.log(room.value)
+
+      */
+        console.log("go to the chatroom");
+       window.location.href = "./index.html"
+    })
+   
+
+    username.addEventListener('keydown', function(event) {
+            if(event.which === 13 || event.which === 9 ){
+                console.log(username.value)
+            }
+        })
+    })();                    
+    </script>
+
+</body>
+</html>
