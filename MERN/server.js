@@ -27,17 +27,17 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
         }
 
         //Gets Chats from mongo collection
-        chat.find().limit(100).sort({_id:1}).toArray(function(err,res) {
+        /*chat_history.find().limit(100).sort({_id:1}).toArray(function(err,res) {
             if(err){ throw err;  }
             socket.emit('output', res);
-        });
+        });*/
 
         // handle input events 
         socket.on('input', function(data){
             let name = data.name;
             let message = data.message;
             let date = data.date;
-            let room = data.rooms;
+            let room = data.room;
 
             console.log(name + " " + message + " " + date)
             // check for name and message
@@ -46,7 +46,7 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
                 sendStatus('Please enter a name and message')
             }
             else {
-                chat.insert({name: name, message: message, date: date}, function(){
+                chat_history.insertOne({name: name, message: message, room:room, date: date}, function(){
                     client.emit('output', [data]);
                     //send status object
                     sendStatus({
@@ -67,11 +67,23 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
             if( name == '' || message == '' || date == '' || room == ''){
                 sendStatus('Please enter a name and message');
             }else{
-                chat_history.insert({name:name, message: message, date: date, room: room}, function(){
-                    client.emit('output', [data]);
-                    sendStatus({
-                        clear:true
-                    })
+                
+                chat_history.find({name:name, room:room}).toArray(function(err, res){
+                    if(err) throw err
+                    else {
+                        if(res.length == 0){
+                            message = `Joined`;
+                            console.log("CONNECTED")
+                            socket.emit('cleared')
+                        } 
+                        chat_history.insertOne({name:name, message: message, room:room, date: date}, function(){
+                            client.emit('output', [{name:name, message: message, date: date, room: room}]);
+                            sendStatus({
+                                clear:true
+                            })
+                        })
+        
+                    }
                 })
             }
 
@@ -96,10 +108,10 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
         })
 
 
-        socket.on('Clear', function(data){
+        socket.on('clear', function(data){
             // remove all chats from collection
-            chat.remove({}, function(){
-                //emit cleared
+            chat_history.remove({}, function(){
+            //emit cleared
                 socket.emit('cleared')
             })
         });
@@ -113,7 +125,7 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
             if( name == '' || message == '' || date == '' || room == ''){
                 //sendStatus('Please enter a name and message');
             }else{
-                chat_history.insert({name:name, message: message, date: date, room: room}, function(){
+                chat_history.insertOne({name:name, message: message, date: date, room: room}, function(){
                     client.emit('output', [data]);
                     sendStatus({
                         clear:true
