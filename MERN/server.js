@@ -1,5 +1,7 @@
 const mongo = require('mongodb').MongoClient;
 const client = require('socket.io').listen(4000).sockets;
+// import ChatRoom Schema
+var { ChatRoom } = require('./models/ChatRoom')
 // connect using m.lab
 const url = "mongodb://101087205:Chat123456@ds351455.mlab.com:51455/chat-application"
 
@@ -47,7 +49,7 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
             }
             else {
                 chat_history.insertOne({name: name, message: message, room:room, date: date}, function(){
-                    client.emit('output', [data]);
+                   client.emit('output', [data]);
                     //send status object
                     sendStatus({
                         message:'Message Sent',
@@ -59,6 +61,7 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
 
         // handle new User events
         socket.on('join', function(data){
+
             let name = data.name;
             let message = data.message;
             let date = data.date;
@@ -66,23 +69,38 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
 
             if( name == '' || message == '' || date == '' || room == ''){
                 sendStatus('Please enter a name and message');
-            }else{
-                
+            } else {
+
+                // find the name and the room in the room history
+                // if the result not found send the message to the screen Join
+                // else the message send to the screen connected
+
                 chat_history.find({name:name, room:room}).toArray(function(err, res){
                     if(err) throw err
                     else {
                         if(res.length == 0){
                             message = `Joined`;
                             console.log("CONNECTED")
-                            socket.emit('cleared')
-                        } 
-                        chat_history.insertOne({name:name, message: message, room:room, date: date}, function(){
-                            client.emit('output', [{name:name, message: message, date: date, room: room}]);
-                            sendStatus({
-                                clear:true
+                            // insert to the chat_history the new user who joined
+                            chat_history.insertOne({name:name, message: message, room:room, date: date}, function(){
+                                // emit to the output the user
+                                client.emit('output', [{name:name, message: message, room:room, date: date}]);
+                                sendStatus({
+                                    clear:true
+                                })
                             })
-                        })
-        
+                        } else {
+                            // select all message from the room
+                            // if no message in the room
+                            chat_history.find({room:room}).limit(100).sort({_id:1}).toArray(function(err,doc) {
+                                if(err){ throw err;  }
+                                else {
+                                doc.push(data)
+                                socket.emit('output', doc);
+                                }
+                            })
+                        }
+                        
                     }
                 })
             }
@@ -116,14 +134,19 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
             })
         });
 
-        socket.on('disconnect', function(data){
+        socket.on('logout', function(data){
             let name = data.name;
             let message = data.message;
             let date = data.date;
             let room = data.room;
 
+            console.log(name)
+            console.log(message)
+            console.log(room)
+                
             if( name == '' || message == '' || date == '' || room == ''){
                 //sendStatus('Please enter a name and message');
+                console.log("Empty")
             }else{
                 chat_history.insertOne({name:name, message: message, date: date, room: room}, function(){
                     client.emit('output', [data]);
@@ -135,6 +158,5 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
          })
      
     })
-
 });
 
