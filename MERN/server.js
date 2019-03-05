@@ -23,7 +23,7 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
         var db = database.db('chat-application')
         // create the collection
         const chat = db.collection('ChatRoom');
-        const event = db.collection('Events')
+        const events = db.collection('Events')
         const rooms = db.collection('RoomHistory')
        // const chat_history = db.collection('chat_history');
 
@@ -42,12 +42,10 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
 
         // handle input events 
         socket.on('input', function(data){
-            let name = data.name;
-            let message = data.message;
-            let date = data.date;
-            let room = data.room;
+            //Save the events
+            events.insertOne({name:data.name, type:'Input', date:data.date, time: data.date}) 
             // check for name and message
-                chat.insertOne({name: name, message: message, room:room, date: date}, function(){
+                chat.insertOne({name:data.name, message: data.message, room:data.room, date:data.date}, function(){
                    client.emit('output', [data]);
                     //send status object
                     sendStatus({
@@ -59,111 +57,78 @@ mongo.connect(url, { useNewUrlParser: true }, function(err, database) {
 
         // handle new User events
         socket.on('join', function(data){
-            let name = data.name;
-            let message = data.message;
-            let date = data.date;
-            let room = data.room;
-
-            if( name == '' || message == '' || date == '' || room == ''){
-                sendStatus('Please enter a name and message');
-            } else {
-                // find the name and the room in the room history
-                // if the result not found send the message to the screen Join
-                // else the message send to the screen connected
-                chat.find({name:name, room:room}).toArray(function(err, res){
-                    if(err) throw err
-                    else {
-                        if(res.length == 0){
-                            message = `Joined`;
-                            // call the function to insert the Events
-                            InsertEvents({name:name, type:'Join', date:date, time: date})
-                            // insert to the chat_history the new user who joined
-                            chat.insertOne({name:name, message: message, room:room, date: date}, function(){
-                                // emit to the output the user
-                                client.emit('output', [{name:name, message: message, room:room, date: date}]);
-                                sendStatus({
-                                    clear:true
-                                })
+           // find the user in the room 
+           // if the user found send the message to the output User connected otherwise
+           //U User Join and insert to the room the new user and the user history
+            rooms.find({name:data.name, room:data.room}).toArray(function(err, res) {
+                if(!err){
+                    if(res.length === 0){
+                        console.log("Join");
+                        // insert the user to the room collections
+                        rooms.insertOne({name:data.name, room:data.room})
+                        //insert into the event collection
+                        events.insertOne({name:data.name, type:'Join', date:data.date, time:data.date})
+                        // insert into the chat history 
+                        //emit to the user output that 
+                        chat.insertOne({name:data.name, message: 'Join', room:data.room, date:data.date}, function(){
+                            // emit to the output the user
+                            client.emit('output', [{name:data.name, message: 'Join', room:data.room, date:data.date}]);
+                            sendStatus({
+                                clear:true
                             })
-                        } else {
-                            //
-                            InsertEvents({name:name, type:'Connected', date:date, time: date})
-                            // select all message from the room
-                            // if no message in the room
-                            chat.find({room:room}).limit(100).sort({_id:1}).toArray(function(err,doc) {
-                                if(err){ throw err;  }
-                                else {
-                                doc.push(data)
-                                socket.emit('output', doc);
-                                }
-                            })
+                        })
+                    } else {
+                        //insert into the event collection
+                        events.insertOne({name:data.name, type:'Connected', date:data.date, time:data.date})
+                        chat.find({room:data.room}).limit(100).sort({_id:1}).toArray(function(err,doc) {
+                        if(err){ throw err;  }
+                        else {
+                        doc.push(data)
+                        socket.broadcast.emit('output', doc);
                         }
-                        
+                        })
                     }
-                })
-            }
+                }
+                // if there is error it will throw it
+                else { throw err}
+            })
 
         })
 
         // handle on left events
         socket.on('leftRoom', function(data){
             // event.insertOne({Type:'Left', Date:date, })
-            InsertEvents({name:data.name, type:'Left', date:data.date, time: data.date}) 
-            client.emit('output', [data]);
-                sendStatus({
-                   clear:true
-                })
+            events.insertOne({name:data.name, type:'Left', date:data.date, time: data.date}) 
+            chat.insertOne({name:data.name, message:'Left', date:data.date, time: data.date})
+            // remove the user in the room
+            // Emit the brodcast message to the output that user left the group
+            rooms.remove({name:data.name, room:data.room}, (err, res) => {
+                if(!err){
+                    client.broadcast.emit('output', [data]);
+                    sendStatus({ clear:true })
+                } else { throw err }         
             })
+        })
+            
 
 
         socket.on('clear', function(data){
-            // remove all chats from collection
-            chat.remove({}, function(){
+            //Save the events
+            events.insertOne({name:data.name, type:'Clear', date:data.date, time: data.date}) 
             //emit cleared
                 socket.emit('cleared')
-            })
         });
-
+        // When the user disconnet
         socket.on('logout', function(data){
-            let name = data.name;
-            let message = data.message;
-            let date = data.date;
-            let room = data.room;
-
-            console.log(name)
-            console.log(message)
-            console.log(room)
-                
-            if( name == '' || message == '' || date == '' || room == ''){
-                //sendStatus('Please enter a name and message');
-                console.log("Empty")
-            }else{
-                chat.insertOne({name:name, message: message, date: date, room: room}, function(){
-                    client.emit('output', [data]);
+                //Save the events
+                 events.insertOne({name:data.name, type:'Logout', date:data.date, time: data.date}) 
+                 chat.insertOne({name:data.name, message:data.message, date:data.date, room:data.room}, function(){
+                    client.broadcast.emit('output', [data]);
                     sendStatus({
                         clear:true
                     })
                 })
-            }
-         })
-
-    // process to inserts events
-    function InsertEvents(data){
-     events = {
-        name: data.name,
-        type: data.type,
-        date: data.date,
-        time: data.time,
-       };
-    event.insertOne(events)
-    }
-
-    // remove the user from the room
-    function RemoveUser(data){
-      
-    }
-
-    // function to inserts chat history in the collection
+            })    
     })
 });
 

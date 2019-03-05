@@ -11,7 +11,6 @@
   "author": "Abdallahman Habyarimana & Renata Moura",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^4.1.0",
     "express": "^4.16.4",
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.17",
@@ -19,6 +18,7 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "cors": "^2.8.5",
     "nodemon": "^1.18.10"
   }

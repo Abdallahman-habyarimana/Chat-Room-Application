@@ -13,13 +13,6 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/eventlog', (req, res) => {
-    Events.find((err, docs) => {
-        if (!err) { res.send(docs);}
-        else { console.log('Error in Retrieving Events :' + JSON.stringify(err, undefined, 2));
-    }
-    })
-})
 
 
 module.exports = router;
