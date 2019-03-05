@@ -50,7 +50,9 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+
     (function() {
         var element = function(id) {
             return document.getElementById(id)
@@ -126,6 +128,7 @@
             }
         })*/
         
+        
         // when You choose the room 
         rooms.addEventListener('change', function(event){
             // When new user join the room
@@ -139,8 +142,7 @@
                date: date,
                room: rooms.value
             })
-        }
-            
+        }    
             event.preventDefault()
         })
 
@@ -152,13 +154,20 @@
         // when user left the group
 
         exitBtn.addEventListener('click', function(){
-            var date = new Date().getTime()
-           
-           socket.emit('leftRoom', {
+            // get the hours
+            let d = new Date()
+            //convert the date in the date format D/M/YYYY
+            let date = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+            //convert the time in the format hh:mm:ss
+            let time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds() 
+            //emit the socket to the server on the socket left 
+            socket.emit('leftRoom', {
                name:username.value,
                message: `left the ${rooms.value} room`,
                date: date,
-               room: rooms.value
+               time:time,
+               room: rooms.value,
+               type: 'left'
             })
         })
 
