@@ -7,8 +7,6 @@ var EventSchema = new Schema({
     time: { type: Date, required:true }
 });
 var Events = mongoose.model('Events', EventSchema)
-module.exports = {
-    Events 
-    }
+module.exports = { Events }
 
     
