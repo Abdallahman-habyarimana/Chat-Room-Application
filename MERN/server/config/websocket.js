@@ -96,15 +96,6 @@ io.on('connection', function(socket) {
             } else { throw err }         
         })
     })  
-    
-    // When the user clear the room
-    socket.on('clear', function(data){
-        // Call the handleEvent to save the event 
-        handleEvent({name:data.name, type:'Clear', date:data.date, time: data.date}) 
-        //emit cleared
-        socket.emit('cleared')
-    });
-
     // When the user disconnet
     socket.on('logout', function(data){
         // Call the handleEvent to save the event 
