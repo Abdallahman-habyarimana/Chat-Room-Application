@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "mongodb": "^3.1.13",
-    "opener": "^1.5.1",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
@@ -20,6 +19,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "mongoose": "^5.4.17",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "opener": "^1.5.1"
   }
 }
