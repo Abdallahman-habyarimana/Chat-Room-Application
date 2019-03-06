@@ -31,7 +31,7 @@ mongoose.connect(url, { useNewUrlParser: true }, function(err) {
             // check for name and message
             handleChatRoom({name:data.name, message: data.message, room:data.room, date:data.date})
             //Emit back to the output the data that the user input
-            socket.emit('output', [data]);
+            io.emit('output', [data]);
                     //send status object
             sendStatus({
                  message:'Message Sent',
@@ -57,7 +57,7 @@ mongoose.connect(url, { useNewUrlParser: true }, function(err) {
                         //emit to the user output that 
                         handleChatRoom({name:data.name, message: 'Join', room:data.room, date:data.date})
                         // emit the broadcast message that the user join
-                        io.emit('output', [{name:data.name, message: 'Join', room:data.room, date:data.date}]);
+                        socket.broadcast.emit('output', [{name:data.name, message: 'Join', room:data.room, date:data.date}]);
                         sendStatus({
                                 clear:true
                         })
@@ -70,12 +70,12 @@ mongoose.connect(url, { useNewUrlParser: true }, function(err) {
                             if(err){ throw err;  }
                             else { 
                                // loop throught the json and convert the result to array
-                                let arr = result.map(result => ({ name:result.name, message:result.message}));
+                                let arr = result.map(result => ({ name:result.name, message:result.message, room:result.room}));
                                 //push the data to the array that came from the connected user
-                                arr.push(data);
+                                socket.broadcast.emit('output', [{name:data.name, message:'Connected', date:data.date, time:data.date, room:data.room}])
                                 //emit to the other user that user is connected
-                                io.emit('output', arr);
-                            sendStatus({
+                                socket.emit('output', arr);
+                                 sendStatus({
                                 clear:true
                             })
                             }
@@ -118,11 +118,15 @@ mongoose.connect(url, { useNewUrlParser: true }, function(err) {
             handleEvent({name:data.name, type:'Logout', date:data.date, time: data.date}) 
             // Call the handleChatRoom to save the history 
             handleChatRoom({name:data.name, message:data.message, date:data.date, room:data.room});
-                 socket.broadcast.emit('output', [data]);
-                 sendStatus({
-                     clear:true
-                 })
-                // client.emit
+            RoomHistory.findOneAndRemove({name:data.name, room: data.room}, ((err) =>{
+                if(err) { throw err }
+                else { 
+                    socket.broadcast.emit('output', [data]);
+                    sendStatus({
+                    clear:true
+                })
+                }
+            }))
             })
     })
 
