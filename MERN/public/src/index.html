@@ -33,7 +33,6 @@
                         <option value="React">React</option>
                         <option value="Angular">Angular</option>
                         <option value="Java">Java group Chat</option>
-                    
                         <option value="typescript">TypeScript</option>            
                     
                     </select>
@@ -105,9 +104,11 @@
               var message = document.createElement('div');
               message.setAttribute('class', 'chat-message');
               message.textContent = data[x].name +" "+ data[x].message;
+              if(rooms.value === data[x].room ){
               messages.appendChild(message)
               messages.setAttribute("style","overflow:auto;");
               messages.insertBefore(message, messages.lastChild)
+              }
             }
         }
         });
@@ -115,27 +116,19 @@
         socket.on('status', function(data){
             //get messages status
             setStatus((typeof data === 'object')? data.message : data);
-
             //If status is clear, clear text
             if(data.clear){
                 textarea.value = "";
             }
         });
-        
-      /*  username.addEventListener('keydown', function(event){
-            if((event.which === 13 || event.which === 9) && event.shiftKey == false){
-               disabled("username")
-            }
-        })*/
-        
-        
+          
         // when You choose the room 
         rooms.addEventListener('change', function(event){
             // When new user join the room
             var date = new Date().getTime()   
              // when new user joint the group
             h_rooms = rooms.value;
-            if (h_rooms !== ""){
+            if (h_rooms !== "" && username.value !== ""){
             socket.emit('join', {
                name:username.value,
                message:`${name} is connected`,
@@ -169,7 +162,7 @@
                room: rooms.value,
                type: 'left'
             })
-        })
+             })
 
         logout.addEventListener('click', function(event){
             var date = new Date().getTime()

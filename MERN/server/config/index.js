@@ -100,9 +100,9 @@ mongoose.connect(url, { useNewUrlParser: true }, function(err) {
             handleChatRoom({name:data.name, message:'Left', date:data.date, time: data.date})
             // remove the user in the room
             // Emit the brodcast message to the output that user left the group
-            RoomHistory.remove({name:data.name, room:data.room}, (err, res) => {
+            RoomHistory.deleteOne({name:{$eq:data.name}, room:{$eq:data.room}}).exec((err, res) => {
                 if(!err){
-                    client.broadcast.emit('output', [data]);
+                    client.emit('output', [data]);
                     sendStatus({ clear:true })
                 } else { throw err }         
             })
@@ -146,10 +146,8 @@ mongoose.connect(url, { useNewUrlParser: true }, function(err) {
             time: data.time
         })
         event.save()
-    }
-    
+    } 
     //Handle RoomHistory
-    
     function handleRoomHistory(data){
         var rooms = new RoomHistory({
             name:data.name,
