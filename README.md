@@ -9,6 +9,7 @@ There is a couple of package you need to install while this application failed t
  npm i -s--dev opener concurrently
  
 To run the client side :npm run open
+
 To run the server side: npm run server
 
 
