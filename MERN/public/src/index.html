@@ -160,19 +160,16 @@
                room: rooms.value,
                type: 'left'
             })
-             })
+        })
 
         logout.addEventListener('click', function(event){
             var date = new Date().getTime()
             socket.emit('logout', {
                name:username.value,
-               message: ` is disconnected`,
+               message: `is disconnected`,
                date: date,
                room: rooms.value
             })
-           console.log(username.value);
-           console.log(date);
-           console.log(rooms.value);
         })
 
         //Handle the input
@@ -189,7 +186,11 @@
               event.preventDefault();
             }
         });
-        
+
+        // when the user disconnect
+        socket.emit('disconnect', function(){
+            socket.emit('disconnect')
+        })
     }
 })();
 </script>

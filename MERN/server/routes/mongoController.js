@@ -5,10 +5,10 @@ const { RoomHistory } = require('../models/RoomHistory')
 //function to save the data
 handleChatRoom = (data) => {
     var chat = new ChatRoom({
-        name:data.name,
+        sender:data.name,
         message:data.message,
         room:data.room,
-        date:data.date
+        date:data.date,  
     })
     chat.save()
 }
@@ -16,10 +16,10 @@ handleChatRoom = (data) => {
  // paramether that holds the data
 handleEvent = (data) => {
     var event = new Events({
-        name: data.name,
         type: data.type,
         date : data.date, 
-        time: data.time
+        time: data.time,
+        ppid: data.ppid,
     })
     event.save()
 } 
@@ -27,7 +27,8 @@ handleEvent = (data) => {
 handleRoomHistory = (data) => {
     var rooms = new RoomHistory({
         name:data.name,
-        room:data.room
+        room:data.room,
+        date:data.date
     })
     rooms.save()
 }  
