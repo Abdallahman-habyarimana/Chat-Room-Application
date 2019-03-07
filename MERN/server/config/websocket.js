@@ -133,8 +133,9 @@ io.on('connection', function(socket) {
         // update in the history that the user left
         if (!ar1){ }
         else if( ar1.length === 1){
+            console.log(ar1)
             for(var i=0; i<ar1.length;i++){
-                handleChatRoom({name:ar1[i].name, message:'disconnect', date:Date.now(), room:ar1[i].room})
+               // handleChatRoom({name:ar1[i].name, message:'disconnect', date:Date.now(), room:ar1[i].room})
                 socket.broadcast.emit('output', [{name:ar1[i].name, message:'disconnect', date:Date.now(), room:ar1[i].room}]);
                 sendStatus({ clear:true })
             }
@@ -147,7 +148,7 @@ io.on('connection', function(socket) {
     else {  }
     })  
     function unSet(data){
-         ar1.push(data) 
+        ar1.push(data) 
     }
    
 })

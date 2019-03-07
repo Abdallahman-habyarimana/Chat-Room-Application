@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "open": "opener ./public/src/index.html ",
-    "server": "nodemon server.js",
-    "start": "concurrently -kill-others \" npm run server \" \" npm run open \""
+    "test": "echo \"Erro: no test specified\" && exit1",
+    "start": "node server.js",
+    "heroku-postbuild": " npm install && npm run build"
   },
   "author": "Abdallahman Habyarimana & Renata Moura",
   "license": "ISC",

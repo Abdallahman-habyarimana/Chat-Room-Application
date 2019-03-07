@@ -6,7 +6,7 @@ var { ChatRoom } = require('../models/ChatRoom');
 var { Events } = require('../models/Events');
 var { RoomHistory } = require('../models/RoomHistory')
 
-// get all chat history
+// get all chat history lcohost:300/api/histor
 router.get('/history', (req, res) => {
     ChatRoom.find((err, docs) => {
         if (!err) { res.send(docs);}

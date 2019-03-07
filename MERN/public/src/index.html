@@ -29,9 +29,9 @@
                     <select id="roomname" class="form-control" required>
                         <option> Please Select </option>
                         <option value="node">Node</option>
-                        <option value="React">React</option>
-                        <option value="Angular">Angular</option>
-                        <option value="Java">Java group Chat</option>
+                        <option value="react">React</option>
+                        <option value="angular">Angular</option>
+                        <option value="java">Java group Chat</option>
                         <option value="typescript">TypeScript</option>            
                     
                     </select>
@@ -87,7 +87,8 @@
     var socket = io.connect('http://127.0.0.1:4000');
 
     console.log("Test the connection")
-
+    let user = '';
+    let rm  = '';
     // check for connection
 
     if(socket !== undefined ){
@@ -105,7 +106,7 @@
               if(rooms.value === data[x].room ){
               messages.appendChild(message)
               messages.setAttribute("style","overflow:auto;");
-              messages.insertBefore(message, messages.lastChild)
+              messages.insertBefore(message, messages.firstChild)
               }
             }
         }
@@ -123,6 +124,8 @@
         // when You choose the room 
         rooms.addEventListener('change', function(event){
             // When new user join the room
+            user = username.value;
+            rm = rooms.value;
             var date = new Date().getTime()   
              // when new user joint the group
             h_rooms = rooms.value;
@@ -166,7 +169,7 @@
             var date = new Date().getTime()
             socket.emit('logout', {
                name:username.value,
-               message: `is disconnected`,
+               message: `disconnect`,
                date: date,
                room: rooms.value
             })
@@ -186,11 +189,15 @@
               event.preventDefault();
             }
         });
-
+        
+        // check whether the browser is refreshed or closed
+        if (typeof window !== 'undefined' && window.document) {
+            console.log(user);
+            console.log(rm);
+           // socket.emit('disconnect')
+        }
         // when the user disconnect
-        socket.emit('disconnect', function(){
-            socket.emit('disconnect')
-        })
+        
     }
 })();
 </script>
