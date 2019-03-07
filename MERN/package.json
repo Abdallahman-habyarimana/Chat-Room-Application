@@ -1,11 +1,14 @@
 {
   "name": "mern",
   "version": "1.0.0",
-  "description": "",
+  "description": "a Chat application",
   "main": "index.js",
+  "engines": {
+    "npm":"6.8"
+  },
   "scripts": {
     "test": "echo \"Erro: no test specified\" && exit1",
-    "start": "node server.js && npm run build",
+    "start": "cd MERN node server.js && npm run build",
     "heroku-postbuild": " npm install && npm run build"
   },
   "author": "Abdallahman Habyarimana & Renata Moura",
