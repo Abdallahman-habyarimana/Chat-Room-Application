@@ -7,7 +7,7 @@
     "npm": "6.8"
   },
   "scripts": {
-    "test": "mocha",
+     "test": "mocha",
     "client": "opener ./public/src/index.html",
     "server": "node server.js",
     "dev": "concurrently --kill-others --silent first\" npm run server \" \" npm run client \"",

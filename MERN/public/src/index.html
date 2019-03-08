@@ -8,10 +8,15 @@
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
           crossorigin="anonymous">
-    <title> MongoChat</title>
-    <style>
-        #messages{height:300px;}
-    </style>
+
+    <link href="../style/style.css" rel="stylesheet" type="text/css">
+       <style>
+       #messages{
+    height:300px;
+}
+       </style>
+       <title> Chat Assignment </title>
+
 </head>
 <body>
     <div class="container">
@@ -24,10 +29,12 @@
                 </h1>
                 <div id="status"></div>
                 <div id="chat">
-                    <input type="text" id="username" class="form-control" placeholder="Enter name....">
+                    <input type="text" id="username" class="form-control" placeholder="Enter your name....">
                     <br>
+
+                    <!-- CREATING ROOMS-->
                     <select id="roomname" class="form-control" required>
-                        <option> Please Select </option>
+                        <option> Please Select a Room </option>
                         <option value="node">Node</option>
                         <option value="react">React</option>
                         <option value="angular">Angular</option>
@@ -36,13 +43,13 @@
                     
                     </select>
                     <br>
+                    <!-- MESSAGE BOX -->
                     <div class="card">
-                        <div id="messages" class="card-block">
-
+                        <div id="messages" class="card-block" >
                         </div>
                     </div>
                     <br>
-                    <textarea id="textarea" class="form-control" placeholder="Enter message"></textarea>
+                    <textarea id="textarea" class="form-control"  placeholder="Enter message"></textarea>
                 </div>
             </div>
         </div>
@@ -89,6 +96,7 @@
     console.log("Test the connection")
     let user = '';
     let rm  = '';
+
     // check for connection
 
     if(socket !== undefined ){
@@ -104,13 +112,14 @@
               message.setAttribute('class', 'chat-message');
               message.textContent = data[x].name +" "+ data[x].message;
               if(rooms.value === data[x].room ){
-              messages.appendChild(message)
-              messages.setAttribute("style","overflow:auto;");
-              messages.insertBefore(message, messages.firstChild)
+                messages.appendChild(message)
+                messages.setAttribute("style","overflow:auto;");
+                messages.insertBefore(message, messages.firstChild)
               }
             }
         }
         });
+
         //Get status from the server
         socket.on('status', function(data){
             //get messages status
@@ -130,11 +139,11 @@
              // when new user joint the group
             h_rooms = rooms.value;
             if (h_rooms !== "" && username.value !== ""){
-            socket.emit('join', {
-               name:username.value,
-               message:`${name} is connected`,
-               date: date,
-               room: rooms.value
+                socket.emit('join', {
+                name:username.value,
+                message:`${name} is connected`,
+                date: date,
+                room: rooms.value
             })
         }    
             event.preventDefault()
@@ -145,8 +154,8 @@
                 username.append(username.value)
             }
         })
-        // when user left the group
 
+        // when user left the group
         exitBtn.addEventListener('click', function(){
             // get the hours
             let d = new Date()
@@ -164,7 +173,8 @@
                type: 'left'
             })
         })
-
+        
+        // LOGIN OUT
         logout.addEventListener('click', function(event){
             var date = new Date().getTime()
             socket.emit('logout', {
