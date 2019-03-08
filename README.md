@@ -8,21 +8,9 @@ Abdallahman Habyarimana: 101087205  &   Renata Moura: 101096098
 
 There is a couple of package you need to install while this application failed to run 
  
-# 1. To run the client side :
-
-$ npm run client
-
-# 2. To run the server side you need to run neither of: 
-
-$ npm run server
-
-or
+# 1. To run the the project :
 
 $ npm start
-
-or
-
-$ heroku local web
 
 # NB: You might get the error like 
 
