@@ -4,12 +4,14 @@
   "description": "a Chat application",
   "main": "index.js",
   "engines": {
-    "npm":"6.8"
+    "npm": "6.8"
   },
   "scripts": {
-    "test": "echo \"Erro: no test specified\" && exit1",
-    "start": "cd MERN node server.js && npm run build",
-    "heroku-postbuild": " npm install && npm run build"
+    "test": "mocha",
+    "client": "opener ./public/src/index.html",
+    "server": "node server.js",
+    "dev": "concurrently --kill-others --silent first\" npm run server \" \" npm run client \"",
+    "heroku-postbuild": "cd public npm install && npm run build"
   },
   "author": "Abdallahman Habyarimana & Renata Moura",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
+    "mocha": "^6.0.2",
     "mongoose": "^5.4.17",
     "nodemon": "^1.18.10",
     "opener": "^1.5.1"
