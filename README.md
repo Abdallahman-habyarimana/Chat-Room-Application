@@ -1,17 +1,17 @@
 "# HTML Chat Application Assignment "
 
-Author:
+# Author:
 
 Abdallahman Habyarimana: 101087205  &   Renata Moura: 101096098
 
 
 There is a couple of package you need to install while this application failed to run 
  
-To run the client side :
+# To run the client side :
 
 $ npm run open
 
-To run the server side you need to run neither of: 
+# To run the server side you need to run neither of: 
 
 $ npm run server
 
@@ -23,7 +23,7 @@ or
 
 $ heroku local web
 
-NB: You might get the error like 
+# NB: You might get the error like 
 
 Error: Cannot find module 'express', the solution is to
 
