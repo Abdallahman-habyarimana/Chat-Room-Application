@@ -7,10 +7,10 @@
     "npm": "6.8"
   },
   "scripts": {
-     "test": "mocha",
+    "test": "",
     "client": "opener ./public/src/index.html",
-    "server": "node server.js",
-    "dev": "concurrently --kill-others --silent first\" npm run server \" \" npm run client \"",
+    "server": "nodemon server.js",
+    "start": "concurrently \" npm run server \" \" npm run client \"",
     "heroku-postbuild": "cd public npm install && npm run build"
   },
   "author": "Abdallahman Habyarimana & Renata Moura",

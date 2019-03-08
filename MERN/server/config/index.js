@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 // connect using m.lab
 const { io } = require('./websocket');
 
-const url = "mongodb://101087205:Chat123456@ds161345.mlab.com:61345/chat-application";
+const { config } =require('./dev')
 //connect to mongodb
+var url = config.URL
 
 mongoose.connect(url, { useNewUrlParser: true }, function(err) {
     // If error throw err
