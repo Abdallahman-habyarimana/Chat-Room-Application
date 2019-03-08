@@ -1,6 +1,6 @@
 # Chat Application Assignment
 
-# Author:
+# Authors:
 
 Abdallahman Habyarimana: 101087205  &   Renata Moura: 101096098
 
