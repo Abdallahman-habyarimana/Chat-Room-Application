@@ -14,7 +14,11 @@ To run the server side:
 
 $ npm run server
 
+or
+
 $ npm start
+
+or
 
 $ heroku local web
 
