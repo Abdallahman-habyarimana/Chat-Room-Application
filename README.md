@@ -4,13 +4,14 @@ Author:
 
 Abdallahman Habyarimana: 101087205  &   Renata Moura: 101096098
 
+
 There is a couple of package you need to install while this application failed to run 
  
 To run the client side :
 
 $ npm run open
 
-To run the server side: 
+To run the server side you need to run neither of: 
 
 $ npm run server
 
