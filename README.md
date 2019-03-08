@@ -1,9 +1,8 @@
 "# HTML Chat Application Assignment "
 
 Author:
-Abdallahman Habyarimana: 101087205
 
-Renata Moura: 101096098
+Abdallahman Habyarimana: 101087205  &   Renata Moura: 101096098
 
 There is a couple of package you need to install while this application failed to run 
  
