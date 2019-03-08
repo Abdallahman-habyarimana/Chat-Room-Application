@@ -10,7 +10,7 @@ There is a couple of package you need to install while this application failed t
  
 # 1. To run the client side :
 
-$ npm run open
+$ npm run client
 
 # 2. To run the server side you need to run neither of: 
 
