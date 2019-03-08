@@ -13,7 +13,9 @@ $ npm run open
 To run the server side: 
 
 $ npm run server
+
 $ npm start
+
 $ heroku local web
 
 NB: You might get the error like 
