@@ -1,17 +1,18 @@
-"# HTML Chat Application Assignment "
+# Chat Application Assignment
 
 # Author:
 
 Abdallahman Habyarimana: 101087205  &   Renata Moura: 101096098
 
+# Instruction to run the project
 
 There is a couple of package you need to install while this application failed to run 
  
-# To run the client side :
+# 1. To run the client side :
 
 $ npm run open
 
-# To run the server side you need to run neither of: 
+# 2. To run the server side you need to run neither of: 
 
 $ npm run server
 
