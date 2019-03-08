@@ -1,0 +1,3 @@
+[submodule "MERN/Project/Chat-Room-Application"]
+	path = MERN/Project/Chat-Room-Application
+	url = https://github.com/habdallah005/Chat-Room-Application.git
