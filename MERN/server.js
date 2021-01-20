@@ -26,7 +26,7 @@ app.listen(PORT, () => console.log('Server started at port : 3000'));
 // set the express api to listen when is http:localhost:3000/api
 // all the route of the apiController
 app.use('/api', apiController);
-// anything that doesn't match the above, send back index.html
+// anything that doesn't match   the above, send back index.html
 app.get('*', (req, res) => {
    res.sendFile(path.join + 'public/src/index.html')
 })
